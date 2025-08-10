@@ -45,11 +45,15 @@ const Login = () => {
             const { token, user } = response.data;
 
             if (token) {
-                localStorage.setItem("token", token)
-                setUser(user)
+                const expiry = Date.now() + 24 * 60 * 60 * 1000; 
+                localStorage.setItem("token", token);
+                localStorage.setItem("tokenExpiry", expiry);
+                localStorage.setItem("user", JSON.stringify(user));
+                setUser(user);
                 toast.success("Logged in successfully!");
-                navigate('/dashboard')
+                navigate('/dashboard');
             }
+
         } catch (err) {
             e.preventDefault();
             console.error("Something went wrong", err);

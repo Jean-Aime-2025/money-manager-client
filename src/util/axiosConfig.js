@@ -12,13 +12,13 @@ const excludeEndpoints = ["/login","/register","/status","/activate","/health"];
 
 axiosConfig.interceptors.request.use((config) => {
     const shouldSkipToken = excludeEndpoints.some(endpoint =>{
-        (config.url || '').includes(endpoint)
+        return config.url?.includes(endpoint)
     }
     );
     if (!shouldSkipToken) {
-        const accessToken = localStorage.getItem("token");
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
+        const token = localStorage.getItem("token");
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
     }
     return config;
