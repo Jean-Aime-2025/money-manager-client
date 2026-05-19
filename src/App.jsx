@@ -10,6 +10,7 @@ import { Toaster } from "sonner"
 import NotFound from "./pages/NotFound"
 import { AppContextProvider } from "./context/AppContext"
 import Dashboard from "./components/Dashboard"
+import AuthLayout from "./components/AuthLayout"
 
 const App = () => {
   return (
@@ -23,8 +24,8 @@ const App = () => {
             <Route path="/expense" element={<Dashboard activeMenu="Expense"><Expense /></Dashboard>} />
             <Route path="/category" element={<Dashboard activeMenu="Category"><Category /></Dashboard>} />
             <Route path="/filter" element={<Dashboard activeMenu="Filter"><Filter /></Dashboard>} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<AuthLayout><Signup /></AuthLayout>} />
+            <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppContextProvider>
