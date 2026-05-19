@@ -16,6 +16,10 @@ const MenuBar = ({ activeMenu }) => {
         setShowDropDown(false);
     }
 
+    const handleCloseSidebar = () => {
+        setOpenSideMenu(false)
+    }
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -51,9 +55,13 @@ const MenuBar = ({ activeMenu }) => {
                 </div>
             </div>
             <div className="relative" ref={dropdownRef}>
-                <button onClick={() => setShowDropDown(!showDropDown)} className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-800  focus:ring-offset-2">
-                    <User className="text-purple-500" />
-                </button>
+                {user?.profileImageUrl ? (
+                    <img onClick={() => setShowDropDown(!showDropDown)} src={user?.profileImageUrl || ""} alt="profile image" className="object-cover w-10 h-10 bg-white cursor-pointer rounded-full ring-2 ring-purple-800 p-0.5" />
+                ) : (
+                    <button onClick={() => setShowDropDown(!showDropDown)} className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-800 focus:ring-offset-2">
+                        <User className="text-purple-500" />
+                    </button>
+                )}
                 {showDropDown && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                         <div className="px-4 py-3 border-b border-gray-100">
@@ -82,8 +90,8 @@ const MenuBar = ({ activeMenu }) => {
             </div>
 
             {openSideMenu && (
-                <div className="fixed left-0 right-0 bg-white border-b border-gray-200 lg:hidden z-20 top-[73px]">
-                    <Sidebar activeMenu={activeMenu} />
+                <div className="fixed left-0 right-0 bg-black/40 border-b border-gray-200 lg:hidden z-20 top-[73px]">
+                    <Sidebar activeMenu={activeMenu} handleCloseSidebar={handleCloseSidebar} />
                 </div>
             )}
         </div>

@@ -56,7 +56,6 @@ const Login = () => {
 
         } catch (err) {
             e.preventDefault();
-            console.error("Something went wrong", err);
             setError(err.response?.data?.message || err.message);
         } finally {
             setIsLoading(false);

@@ -52,13 +52,6 @@ const Signup = () => {
                 profileImageUrl = imageUrl || "";
             }
 
-            console.log("Payload being sent:", {
-                fullName,
-                email,
-                password,
-                profileImageUrl
-            });
-
             const response = await axiosConfig.post(API_ENDPOINTS.REGISTER, {
                 fullName,
                 email,
@@ -71,12 +64,10 @@ const Signup = () => {
                 navigate('/login');
             }
         } catch (err) {
-            console.error("Something went wrong", err);
             setError(err.response?.data?.message || err.message);
         } finally {
             setIsLoading(false);
         }
-
 
     }
 

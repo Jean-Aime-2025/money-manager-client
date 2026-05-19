@@ -1,44 +1,56 @@
 import axios from 'axios';
+import { BASE_URL } from './apiEndpoints';
 
 const axiosConfig = axios.create({
-  baseURL: 'https://money-manager-api-1dmt.onrender.com/api/v1.0',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
 });
 
-const excludeEndpoints = ["/login","/register","/status","/activate","/health"];
+const excludeEndpoints = [
+  '/login',
+  '/register',
+  '/status',
+  '/activate',
+  '/health',
+];
 
-axiosConfig.interceptors.request.use((config) => {
-    const shouldSkipToken = excludeEndpoints.some(endpoint =>{
-        return config.url?.includes(endpoint)
-    }
-    );
+axiosConfig.interceptors.request.use(
+  (config) => {
+    const shouldSkipToken = excludeEndpoints.some((endpoint) => {
+      return config.url?.includes(endpoint);
+    });
     if (!shouldSkipToken) {
-        const token = localStorage.getItem("token");
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
-}, (error) => {
+  },
+  (error) => {
     return Promise.reject(error);
-});
+  },
+);
 
-axiosConfig.interceptors.response.use((response) => {
+axiosConfig.interceptors.response.use(
+  (response) => {
     return response;
-}, (error) => {
+  },
+  (error) => {
     if (error.response) {
-        if (error.response.status === 401) {
-            window.location.href = '/login';
-        } else if (error.response.status === 500) {
-            console.error("Server error. Please try again later");
-        }
-    } else if (error.code === "ECONNABORTED") {
-        console.error("Request timeout. Please try again.");
+      if (error.response.status === 401) {
+        window.location.href = '/login';
+      } else if (error.response.status === 500) {
+        console.error('Server error. Please try again later');
+      }
+    } else if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout. Please try again.');
     }
     return Promise.reject(error);
-});
+  },
+);
 
 export default axiosConfig;
